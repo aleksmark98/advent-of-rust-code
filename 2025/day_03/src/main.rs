@@ -19,14 +19,6 @@ fn max_joltage_twopasses_part1(bank: &str) -> u64 {
     (first_digit * 10 + second_digit) as u64
 }
 
-fn solution_part1(file_path: &str) -> u64 {
-    fs::read_to_string(file_path)
-        .expect("Cannot open file")
-        .lines()
-        .map(max_joltage_twopasses_part1)
-        .sum()
-}
-
 fn max_joltage_part2(bank: &str) -> u64 {
     const NUM_BATTERIES: usize = 12;
 
@@ -51,11 +43,11 @@ fn max_joltage_part2(bank: &str) -> u64 {
         })
 }
 
-fn solution_part2(file_path: &str) -> u64 {
-    fs::read_to_string(file_path)
+fn solution<F: Fn(&str) -> u64>(file_path: &str, max_joltage: F) -> u64 {
+    std::fs::read_to_string(file_path)
         .expect("Cannot open file")
         .lines()
-        .map(max_joltage_part2)
+        .map(max_joltage)
         .sum()
 }
 
@@ -65,14 +57,14 @@ mod tests {
 
     #[test]
     fn test_part_1() {
-        assert_eq!(357, solution_part1(TEST_INPUT));
-        assert_eq!(17278, solution_part1(INPUT));
+        assert_eq!(357, solution(TEST_INPUT, max_joltage_twopasses_part1));
+        assert_eq!(17278, solution(INPUT, max_joltage_twopasses_part1));
     }
 
     #[test]
     fn test_part_2() {
-        assert_eq!(3121910778619, solution_part2(TEST_INPUT));
-        assert_eq!(171528556468625, solution_part2(INPUT));
+        assert_eq!(3121910778619, solution(TEST_INPUT, max_joltage_part2));
+        assert_eq!(171528556468625, solution(INPUT, max_joltage_part2));
     }
 }
 
@@ -82,10 +74,10 @@ fn main() {
 
     println!(
         "The solution part 1 for \"{file_path}\" is {}",
-        solution_part1(file_path)
+        solution(file_path, max_joltage_twopasses_part1)
     );
     println!(
         "The solution part 2 for \"{file_path}\" is {}",
-        solution_part2(file_path)
+        solution(file_path, max_joltage_part2)
     );
 }

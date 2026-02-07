@@ -79,7 +79,7 @@ fn edge_intersects_rect(a: &Point, b: &Point, r: &Rectangle) -> bool {
     false
 }
 
-fn is_rectangle_valid(pt1: &Point, pt2: &Point, polygon: &Vec<Point>) -> bool {
+fn is_rectangle_valid(pt1: &Point, pt2: &Point, polygon: &[Point]) -> bool {
     let rect = Rectangle::new(pt1, pt2);
     let rect_points_to_check = [Point { x: pt1.x, y: pt2.y }, Point { x: pt2.x, y: pt1.y }];
     let mut are_rect_points_inside = [false; 2];
@@ -128,18 +128,12 @@ fn is_rectangle_valid(pt1: &Point, pt2: &Point, polygon: &Vec<Point>) -> bool {
     true
 }
 
-fn solution_part1(polygon: &Vec<Point>) -> usize {
-    polygon
-        .iter()
-        .tuple_combinations()
-        .fold(0, |max_area, (pt_a, pt_b)| {
-            let (width, heigth) = (pt_a.x.abs_diff(pt_b.x) + 1, pt_a.y.abs_diff(pt_b.y) + 1);
-            let area = width as usize * heigth as usize;
-            max_area.max(area)
-        })
+enum PuzzlePart {
+    One,
+    Two
 }
 
-fn solution_part2(polygon: &Vec<Point>) -> usize {
+fn solution(polygon: &[Point], puzzle_part: PuzzlePart) -> usize {
     polygon
         .iter()
         .tuple_combinations()
@@ -147,10 +141,15 @@ fn solution_part2(polygon: &Vec<Point>) -> usize {
             let (width, heigth) = (pt_a.x.abs_diff(pt_b.x) + 1, pt_a.y.abs_diff(pt_b.y) + 1);
             let new_area = width as usize * heigth as usize;
 
-            if new_area > old_area && is_rectangle_valid(pt_a, pt_b, &polygon) {
-                new_area
-            } else {
-                old_area
+            match puzzle_part {
+                PuzzlePart::One => old_area.max(new_area),
+                PuzzlePart::Two => {
+                    if new_area > old_area && is_rectangle_valid(pt_a, pt_b, polygon) {
+                        new_area
+                    } else {
+                        old_area
+                    }
+                }
             }
         })
 }
@@ -178,24 +177,31 @@ mod tests {
     #[test]
     fn test_part_1() {
         let polygon = read_polygon(TEST_INPUT);
-        assert_eq!(50, solution_part1(&polygon));
+        assert_eq!(50, solution(&polygon, PuzzlePart::One));
         let polygon = read_polygon(INPUT);
-        assert_eq!(4750297200, solution_part1(&polygon));
+        assert_eq!(4750297200, solution(&polygon, PuzzlePart::One));
     }
 
     #[test]
     fn test_part_2() {
         let polygon = read_polygon(TEST_INPUT);
-        assert_eq!(24, solution_part2(&polygon));
+        assert_eq!(24, solution(&polygon, PuzzlePart::Two));
         let polygon = read_polygon(INPUT);
-        assert_eq!(1578115935, solution_part2(&polygon));
+        assert_eq!(1578115935, solution(&polygon, PuzzlePart::Two));
     }
 
     // #[bench]
-    // fn bench_add_two(b: &mut test::Bencher) {
+    // fn bench_part_1(b: &mut test::Bencher) {
     //     let polygon = read_polygon(INPUT);
     //
-    //     b.iter(|| solution_part2(&polygon));
+    //     b.iter(|| solution(&polygon, PuzzlePart::One));
+    // }
+    //
+    // #[bench]
+    // fn bench_part_2(b: &mut test::Bencher) {
+    //     let polygon = read_polygon(INPUT);
+    //
+    //     b.iter(|| solution(&polygon, PuzzlePart::Two));
     // }
 }
 
@@ -204,6 +210,6 @@ fn main() {
     // let file_path = INPUT;
     let polygon = read_polygon(file_path);
 
-    println!("\"{file_path}\" part 1: {}", solution_part1(&polygon));
-    println!("\"{file_path}\" part 2: {}", solution_part2(&polygon));
+    println!("\"{file_path}\" part 1: {}", solution(&polygon, PuzzlePart::One));
+    println!("\"{file_path}\" part 2: {}", solution(&polygon, PuzzlePart::Two));
 }

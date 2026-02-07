@@ -10,12 +10,12 @@ fn solution_part1(file_path: &str) -> u64 {
     let mut lines = file.lines();
 
     let first_line = lines.next().expect("File was empty");
-    let linelength = first_line.len();
-
-    let mut beams = BitVec::from_elem(linelength, false);
     let start_idx = first_line
         .find('S')
         .expect("First line is missing the starting \'S\' character");
+    let linelength = first_line.len();
+
+    let mut beams = BitVec::from_elem(linelength, false);
     beams.set(start_idx, true);
 
     let mut split_counter: u64 = 0;
@@ -38,12 +38,12 @@ fn solution_part2(file_path: &str) -> u64 {
     let mut lines = file.lines();
 
     let first_line = lines.next().expect("File was empty");
-    let linelength = first_line.len();
-
-    let mut timelines = vec![0u64; linelength];
     let start_idx = first_line
         .find('S')
         .expect("First line is missing the starting \'S\' character");
+    let linelength = first_line.len();
+
+    let mut timelines = vec![0u64; linelength];
     timelines[start_idx] = 1;
 
     for row in lines {

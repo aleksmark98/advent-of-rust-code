@@ -18,7 +18,7 @@ fn parse_input(file_path: &str) -> Vec<Vec<u16>> {
         .collect()
 }
 
-fn box_accum_3x3(input: &Vec<Vec<u16>>) -> Vec<Vec<u16>> {
+fn box_accum_3x3(input: &[Vec<u16>]) -> Vec<Vec<u16>> {
     let height = input.len();
     let width = input[0].len();
 
@@ -79,7 +79,7 @@ fn solution_part1(file_path: &str) -> u64 {
     freed_rolls
 }
  
-fn count_neighbor_rolls(rolls: &mut Vec<Vec<u16>>) -> u64 {
+fn count_neighbor_rolls(rolls: &mut [Vec<u16>]) -> u64 {
     let mut neighbor_counts = box_accum_3x3(rolls);
 
     let mut freed_rolls = 0u64;
