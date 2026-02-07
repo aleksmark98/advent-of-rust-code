@@ -75,8 +75,7 @@ fn solution_part1(file_path: &str) -> usize {
     let mut clusters: Vec<HashSet<usize>> = vec![HashSet::from([pairs[0].0, pairs[0].1])];
 
     let n_closest_pairs = if file_path == INPUT { 1000 } else { 10 };
-    // MISTAKE - instead of take(n_closest_pairs) it should be 1..n_closest_pairs
-    for (pt_a, pt_b) in pairs.into_iter().take(n_closest_pairs) {
+    for &(pt_a, pt_b) in pairs[1..n_closest_pairs].into_iter() {
         update_clusters(pt_a, pt_b, &mut clusters);
     }
 
@@ -90,7 +89,7 @@ fn solution_part2(file_path: &str) -> usize {
 
     let mut clusters: Vec<HashSet<usize>> = vec![HashSet::from([pairs[0].0, pairs[0].1])];
 
-    for (pt_a, pt_b) in pairs.into_iter() {
+    for &(pt_a, pt_b) in pairs[1..].into_iter() {
         update_clusters(pt_a, pt_b, &mut clusters);
 
         if clusters.len() == 1 && clusters[0].len() == points.len() {
