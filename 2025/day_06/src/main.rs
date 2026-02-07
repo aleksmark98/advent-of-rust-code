@@ -1,10 +1,10 @@
-use std::fs;
-
+#[allow(dead_code)]
 const INPUT: &str = "input";
+#[allow(dead_code)]
 const TEST_INPUT: &str = "test_input";
 
 fn solution_part1(file_path: &str) -> u64 {
-    let file = fs::read_to_string(file_path).expect("Cannot open file");
+    let file = std::fs::read_to_string(file_path).expect("Cannot open file");
     let mut lines = file.lines();
     let nums: Vec<Vec<u64>> = (0..lines.clone().count() - 1)
         .map(|line_idx| {
@@ -45,7 +45,7 @@ fn solution_part2(file_path: &str) -> u64 {
     // read push parse column into a number and push into a buffer
     // do that until an operator ('+', '*') is found, then skip one column
 
-    let mut data: Vec<Vec<char>> = fs::read_to_string(file_path)
+    let mut data: Vec<Vec<char>> = std::fs::read_to_string(file_path)
         .expect("Cannot open file")
         .lines()
         .map(|line| {
@@ -57,7 +57,7 @@ fn solution_part2(file_path: &str) -> u64 {
     let op_line = data.pop().expect("File was empty");
     let line_len = op_line.len();
     assert!(
-        data.iter().all(|ref v| v.len() == line_len),
+        data.iter().all(|v| v.len() == line_len),
         "Lines are not the same length!"
     );
 

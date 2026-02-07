@@ -1,6 +1,8 @@
 use bit_vec::BitVec;
 
+#[allow(dead_code)]
 const INPUT: &str = "input";
+#[allow(dead_code)]
 const TEST_INPUT: &str = "test_input";
 
 fn solution_part1(file_path: &str) -> u64 {

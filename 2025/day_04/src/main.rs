@@ -1,9 +1,10 @@
-use std::fs;
+#[allow(dead_code)]
 const INPUT: &str = "input";
+#[allow(dead_code)]
 const TEST_INPUT: &str = "test_input";
 
 fn parse_input(file_path: &str) -> Vec<Vec<u16>> {
-    fs::read_to_string(file_path)
+    std::fs::read_to_string(file_path)
         .expect("Cannot open file")
         .lines()
         .map(|line| {
@@ -79,7 +80,7 @@ fn solution_part1(file_path: &str) -> u64 {
 }
  
 fn count_neighbor_rolls(rolls: &mut Vec<Vec<u16>>) -> u64 {
-    let mut neighbor_counts = box_accum_3x3(&rolls);
+    let mut neighbor_counts = box_accum_3x3(rolls);
 
     let mut freed_rolls = 0u64;
     for (roll_row, neighbors_row) in rolls.iter_mut().zip(neighbor_counts.iter_mut()) {

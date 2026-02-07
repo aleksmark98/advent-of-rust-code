@@ -1,4 +1,6 @@
+#[allow(dead_code)]
 const INPUT: &str = "input";
+#[allow(dead_code)]
 const TEST_INPUT: &str = "test_input";
 
 fn process_lock_part1(direction: &str, turns: i32, lock_position: i32, count: u64) -> (i32, u64) {

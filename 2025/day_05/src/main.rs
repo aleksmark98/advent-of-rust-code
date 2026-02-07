@@ -1,7 +1,6 @@
-use std::cmp;
-use std::fs;
-
+#[allow(dead_code)]
 const INPUT: &str = "input";
+#[allow(dead_code)]
 const TEST_INPUT: &str = "test_input";
 
 fn merge_intervals(mut id_ranges: Vec<(u64, u64)>) -> Vec<(u64, u64)> {
@@ -12,7 +11,7 @@ fn merge_intervals(mut id_ranges: Vec<(u64, u64)>) -> Vec<(u64, u64)> {
         .fold(Vec::new(), |mut result, (start, end)| {
             match result.last_mut() {
                 Some((_, last_end)) if *last_end >= start => {
-                    *last_end = cmp::max(*last_end, end);
+                    *last_end = std::cmp::max(*last_end, end);
                 }
                 _ => result.push((start, end)),
             }
@@ -21,7 +20,7 @@ fn merge_intervals(mut id_ranges: Vec<(u64, u64)>) -> Vec<(u64, u64)> {
 }
 
 fn parse_puzzle_input(file_path: &str) -> (Vec<(u64, u64)>, Vec<u64>) {
-    let file = fs::read_to_string(file_path).expect("Cannot open file");
+    let file = std::fs::read_to_string(file_path).expect("Cannot open file");
     let (id_ranges_block, ids_block) = file
         .split_once("\n\n")
         .expect("input must contain two sections");

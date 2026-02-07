@@ -1,5 +1,8 @@
 use std::fs;
+
+#[allow(dead_code)]
 const INPUT: &str = "input";
+#[allow(dead_code)]
 const TEST_INPUT: &str = "test_input";
 
 fn check_invalid_id_part1(id: u64) -> bool {
@@ -9,7 +12,7 @@ fn check_invalid_id_part1(id: u64) -> bool {
     }
     let midpoint = id_str.len() / 2;
 
-    return id_str[0..midpoint] == id_str[midpoint..];
+    id_str[0..midpoint] == id_str[midpoint..]
 }
 
 fn check_invalid_id_part2(id: u64) -> bool {
@@ -29,7 +32,7 @@ fn check_invalid_id_part2(id: u64) -> bool {
 
         return true;
     }
-    return false;
+    false
 }
 
 fn solution<F: Fn(u64) -> bool>(file_path: &str, invalid_id_checker: F) -> u64 {

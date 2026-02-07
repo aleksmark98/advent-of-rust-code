@@ -3,7 +3,9 @@
 
 use itertools::{Itertools, izip};
 
+#[allow(dead_code)]
 const INPUT: &str = "input";
+#[allow(dead_code)]
 const TEST_INPUT: &str = "test_input";
 
 struct Point {
@@ -50,7 +52,7 @@ fn is_pt_on_edge(pt: &Point, edge_pt_a: &Point, edge_pt_b: &Point) -> bool {
 
     let edge_is_horizontal = a.x == b.x;
     let edge_is_vertical = a.y == b.y;
-    std::debug_assert!(edge_is_vertical == !edge_is_horizontal);
+    std::debug_assert!(edge_is_vertical != edge_is_horizontal);
 
 
     if edge_is_vertical {
@@ -68,6 +70,7 @@ fn edge_intersects_rect(a: &Point, b: &Point, r: &Rectangle) -> bool {
             return true;
         }
     } else {
+        #[allow(clippy::collapsible_else_if)]
         if r.x_min < a.x && a.x < r.x_max && a.y.max(b.y) > r.y_min && r.y_max > a.y.min(b.y) {
             return true;
         }
@@ -89,7 +92,7 @@ fn is_rectangle_valid(pt1: &Point, pt2: &Point, polygon: &Vec<Point>) -> bool {
             &mut keep_checking_rect_points
         ) {
             // check if rect points are inside the polygon
-            if *check_pt && is_pt_on_edge(&pt, a, b) {
+            if *check_pt && is_pt_on_edge(pt, a, b) {
                 *inside = true;
                 *check_pt = false;
             }

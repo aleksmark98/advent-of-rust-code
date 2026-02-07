@@ -1,5 +1,6 @@
-use std::fs;
+#[allow(dead_code)]
 const INPUT: &str = "input";
+#[allow(dead_code)]
 const TEST_INPUT: &str = "test_input";
 
 fn max_joltage_twopasses_part1(bank: &str) -> u64 {
@@ -22,7 +23,7 @@ fn solution_part1(file_path: &str) -> u64 {
     fs::read_to_string(file_path)
         .expect("Cannot open file")
         .lines()
-        .map(|bank| max_joltage_twopasses_part1(bank))
+        .map(max_joltage_twopasses_part1)
         .sum()
 }
 
@@ -54,7 +55,7 @@ fn solution_part2(file_path: &str) -> u64 {
     fs::read_to_string(file_path)
         .expect("Cannot open file")
         .lines()
-        .map(|bank| max_joltage_part2(bank))
+        .map(max_joltage_part2)
         .sum()
 }
 
