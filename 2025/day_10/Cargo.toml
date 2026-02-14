@@ -1,0 +1,11 @@
+[package]
+name = "day_10"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+itertools = "0.14.0"
+binarray = { git = "https://github.com/wrightdylan/binarray.git", tag = "0.1.2"}
+indicatif = "0.18.3"
+rayon = "1.11.0"
+z3 = "0.19.5"
