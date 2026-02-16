@@ -31,14 +31,15 @@ impl Machine {
         presses.iter().for_each(|button| opt.assert(&button.ge(0)));
 
         for (pos, &target) in self.joltage.iter().enumerate() {
-            let mut terms = Vec::new();
-
-            for (idx, button) in buttons.iter().enumerate() {
-                if button.contains(&pos) {
-                    terms.push(presses[idx].clone());
-                }
-            }
-            let sum = Int::add(&terms.iter().collect::<Vec<&Int>>());
+            let sum = Int::add(
+                &buttons
+                    .iter()
+                    .enumerate()
+                    .filter_map(|(idx, button)| {
+                        button.contains(&pos).then(||&presses[idx])
+                    })
+                    .collect::<Vec<&Int>>(),
+            );
             opt.assert(&sum.eq(Int::from_u64(target as u64)));
         }
 
@@ -68,9 +69,8 @@ impl Machine {
                 return n;
             }
             visited.insert(state.clone());
-            for button in self.buttons.clone() {
-                let mut next = state.clone();
-                next ^= button;
+            for button in self.buttons.iter() {
+                let next = state ^ button;
                 queue.push_back((next, n + 1));
             }
         }
@@ -82,9 +82,7 @@ impl Machine {
 pub fn input_generator(file_path: &str) -> Vec<Machine> {
     let input = std::fs::read_to_string(file_path).expect("Cannot open file");
 
-    let mut machines = Vec::new();
-
-    for line in input.lines() {
+    input.lines().map(|line| {
         let mut parts: Vec<&str> = line.split_whitespace().collect();
         let first = parts.remove(0);
 
@@ -117,18 +115,17 @@ pub fn input_generator(file_path: &str) -> Vec<Machine> {
             }
         }
 
-        machines.push(Machine { target, buttons, joltage });
-    }
-
-    machines
+        Machine { target, buttons, joltage }
+    })
+    .collect()
 }
 
-fn solution<F>(process: F, input: &Vec<Machine>) -> usize 
+fn solution<F>(process_machine: F, input: &Vec<Machine>) -> usize 
     where F: Fn(&Machine) -> usize + Sync + Send,
 {
     input
         .par_iter()
-        .map(process)
+        .map(process_machine)
         .sum()
 }
 
